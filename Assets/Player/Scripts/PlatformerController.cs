@@ -17,7 +17,7 @@ public class PlatformerController : MonoBehaviour
 
     private bool onGround;
     private bool canJump;
-    // private float percentTimeLeft = 1;
+    private float percentTimeLeft = 1;
 
 
     // Start is called before the first frame update
@@ -31,6 +31,7 @@ public class PlatformerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        SlowingOverTime(speed, jumpHeight, timer, percentTimeLeft);
 
         //Check if the player is on the ground. If we are, then we are able to jump.
         if (onGround == true)
@@ -49,11 +50,19 @@ public class PlatformerController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             rb.velocity = new Vector2(-speed, rb.velocity.y);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                rb.velocity = new Vector2(-speed*2, rb.velocity.y);
+            }
         }
 
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             rb.velocity = new Vector2(+speed, rb.velocity.y);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                rb.velocity = new Vector2(-speed*2, rb.velocity.y);
+            }
         }
         //ELSE if we're not pressing an arrow key, our velocity is 0 along the X axis, and whatever the Y velocity is (determined by jump)
         else
@@ -85,19 +94,51 @@ public class PlatformerController : MonoBehaviour
         }
     }
 
-    // private void SlowingOverTime(float speed, float jumpHeight, float timer, float percentTimeLeft)
-    // {
-    //     float fullTimer = timer;
+    private void SlowingOverTime(float speed, float jumpHeight, float timer, float percentTimeLeft)
+    {
+        float fullTimer = timer;
     //     while(slowingPlayer)
     //     {
-    //         timer-= Time.deltaTime;
+    //         timer-= 0.01f;
+    //         print(timer);
     //         percentTimeLeft = timer/fullTimer;
     //         speed *= percentTimeLeft;
     //         jumpHeight *= percentTimeLeft;
     //         if(timer<=0)
     //         {
     //             slowingPlayer=false;
+    //             print("Timer at 0");
+    //             print(fullTimer);
     //         }
+    //     }
+
+        if(slowingPlayer)
+        {
+            for (int i = 0; i < fullTimer; i++)
+            {
+                StartCoroutine(Wait());
+                timer-=0.5f;
+                percentTimeLeft = timer/fullTimer;
+                speed *= percentTimeLeft;
+                jumpHeight *= percentTimeLeft;
+                print(timer);
+            }
+        }
+
+        slowingPlayer = false;
+
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(0.5f);
+    }
+
+    // private void TimeScaleSlowMethod()
+    // {
+    //     while(slowingPlayer)
+    //     {
+
     //     }
     // }
 }
