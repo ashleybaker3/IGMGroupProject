@@ -17,7 +17,7 @@ public class PlatformerController : MonoBehaviour
 
     private bool onGround;
     private bool canJump;
-    private float percentTimeLeft = 1;
+    // private float percentTimeLeft = 1;
 
 
     // Start is called before the first frame update
@@ -31,22 +31,6 @@ public class PlatformerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
-        float fullTimer = timer;
-        while(slowingPlayer==True)
-        {
-            timer-= Time.deltaTime;
-            percentTimeLeft = timer/fullTimer;
-            speed *= percentTimeLeft;
-            jumpHeight *= percentTimeLeft;
-            
-            // if(timer<=0)
-            // {
-            //     slowingPlayer=false;
-            //     print("Timer at 0");
-            // }
-        }
 
         //Check if the player is on the ground. If we are, then we are able to jump.
         if (onGround == true)
