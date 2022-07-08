@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlatformerController : MonoBehaviour
 {
@@ -9,8 +8,9 @@ public class PlatformerController : MonoBehaviour
     //Speed of character movement and height of the jump. Set these values in the inspector.
     public float speed;
     public float jumpHeight;
-    public float timer;
+    private float timer = 40;
     public bool slowingPlayer;
+    public float timeScaleLevel;
 
     //Assigning a variable where we'll store the Rigidbody component.
     private Rigidbody rb;
@@ -33,6 +33,7 @@ public class PlatformerController : MonoBehaviour
     {
         SlowingOverTime(speed, jumpHeight, timer, percentTimeLeft);
 
+
         //Check if the player is on the ground. If we are, then we are able to jump.
         if (onGround == true)
         {
@@ -53,6 +54,7 @@ public class PlatformerController : MonoBehaviour
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 rb.velocity = new Vector2(-speed*2, rb.velocity.y);
+                print(true);
             }
         }
 
@@ -61,7 +63,8 @@ public class PlatformerController : MonoBehaviour
             rb.velocity = new Vector2(+speed, rb.velocity.y);
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                rb.velocity = new Vector2(-speed*2, rb.velocity.y);
+                rb.velocity = new Vector2(+speed*2, rb.velocity.y);
+                print(true);
             }
         }
         //ELSE if we're not pressing an arrow key, our velocity is 0 along the X axis, and whatever the Y velocity is (determined by jump)
